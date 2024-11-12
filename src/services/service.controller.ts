@@ -2,7 +2,7 @@
 import { Service } from './service.schema';
 import { ServiceService } from './service.service';
 import { CreateServiceDto } from './dto/create-service.dto';
-import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, Patch } from '@nestjs/common';
 
 @Controller('services')
 export class ServiceController {
@@ -23,7 +23,7 @@ export class ServiceController {
     return this.serviceService.findOne(id);
   }
 
-  @Put(':id')
+  @Patch(':id')
   update(@Param('id') id: string, @Body() updateServiceDto: CreateServiceDto): Promise<Service> {
     return this.serviceService.update(id, updateServiceDto);
   }
