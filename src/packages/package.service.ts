@@ -23,26 +23,19 @@ export class PackageService {
     return newPackage.save();
   }
 
-  
-  async findAll(page: number = 1, limit: number = 10): Promise<{ data: Package[], total: number }> {
-    page = Math.max(page, 1);
-    limit = Math.max(limit, 1);
-  
-    const skip = (page - 1) * limit;
-    const total = await this.packageModel.countDocuments();//get count of total records
-  
+  async findAll(): Promise<{ data: Package[], total: number }> {
     const packages = await this.packageModel
       .find()
-      .skip(skip)
-      .limit(limit)
       .populate({
         path: 'services',  
-        select: 'name',   
-      })//for populating services name attached with packages
+        select: 'name', 
+      })
       .exec();
+      const total = packages.length;
   
     return { data: packages, total };
   }
+  
   
   async findOne(id: string): Promise<Package> {
     const packageData = await this.packageModel

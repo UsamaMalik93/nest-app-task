@@ -9,41 +9,20 @@ import { CreateServiceDto } from './dto/create-service.dto';
 export class ServiceService {
   constructor(@InjectModel(Service.name) private serviceModel: Model<Service>) { }
 
-  //to handle create service
+  //to handle creating service
   async create(CreateServiceDto: CreateServiceDto): Promise<Service> {
     const newCreatedService = new this.serviceModel(CreateServiceDto)
     return newCreatedService.save();
   }
-
-  //this will help us to get all records for services
-  async findAll(page: number = 1, limit: number = 10): Promise<{
+  async findAll(): Promise<{
     [x: string]: any; data: Service[], total: number
   }> {
-    page = Math.max(page, 1);
-    limit = limit === undefined ? Infinity : Math.max(limit, 1); // If limit is undefines, set it to Infinity to fetch all records
-
-    let total: number;
-    let services: Service[];
-
-    if (limit === Infinity) {
-      services = await this.serviceModel.find().exec();
-      total = services.length;
-    } else {
-      // Get the total count of services
-      total = await this.serviceModel.countDocuments();
-
-      // Fetch the paginated services
-      const skip = (page - 1) * limit; 
-      services = await this.serviceModel
-        .find()
-        .skip(skip)
-        .limit(limit)
-        .exec();
-    }
-
+    const services = await this.serviceModel.find().exec();
+      const total = services.length;
+  
     return { data: services, total };
   }
-
+  
 
   //this will help us to fetch service by Id
   async findOne(id: string): Promise<Service> {

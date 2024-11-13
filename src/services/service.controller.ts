@@ -14,12 +14,10 @@ export class ServiceController {
   }
 
   @Get()
-  async findAll(
-    @Query('page') page: number = 1,    
-    @Query('limit') limit: number = 10,  
-  ): Promise<{ data: Service[], total: number }> {
-    return this.serviceService.findAll(page, limit);
+  async findAll(): Promise<{ data: Service[], total: number }> {
+    return this.serviceService.findAll();  // Now calling findAll without page and limit
   }
+  
 
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Service> {

@@ -14,10 +14,8 @@ export class PackageController {
 
   @Get()
   async findAll(
-    @Query('page') page: number = 1,
-    @Query('limit') limit: number = 10,
   ): Promise<{ data: Package[], total: number }> {
-    return this.packageService.findAll(page, limit);
+    return this.packageService.findAll();
   }
 
   @Get(':id')
